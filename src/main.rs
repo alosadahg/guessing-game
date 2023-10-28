@@ -1,14 +1,17 @@
-use std::{io, num::ParseIntError, cmp::Ordering};
+use std::io;
+use std::cmp::Ordering;
+use  rand::Rng;
 
 fn main() {
     println!("Guess the number");
-    println!("Please input your guess: ");
+    let secret_number: u32 = rand::thread_rng().gen_range(1..=100);
+    loop {
+        println!("Please input your guess: ");
 
-    let mut input: String = String:: new();
-    let secret_number: u32 = 40;
+    let mut input: String = String::new();
+    
     match io::stdin().read_line(&mut input) {
-        Ok(n) => {
-            println!("{n} bytes read");
+        Ok(_) => {
             println!("You guessed: {input}");
         }
         Err(error) => println!("error: {error}"),
@@ -20,8 +23,12 @@ fn main() {
     };
 
     match guess.cmp(&secret_number) {
-        Ordering::Equal => println!("You win!"),
+        Ordering::Equal => {
+            println!("You win!");
+            break;
+        },
         Ordering::Less => println!("Guess too small"),
         Ordering::Greater => println!("Guess too big"),
+    }
     }
 }
